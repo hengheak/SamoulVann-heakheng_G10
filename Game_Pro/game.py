@@ -1,5 +1,7 @@
 #  IMPORTS------------------------------------------------------
 import tkinter as tk
+import winsound
+from typing import Generator
 #  MAIN Code-----------------------------------------------------
 root = tk.Tk()
 
@@ -53,7 +55,7 @@ grid =[
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 3, 0, 3, 0, 1, 0, 0, 2, 0, 1],
+    [1, 2, 3, 0, 3, 0, 1, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 4, 0, 1, 1, 1, 0, 0, 1],
     [1, 3, 4, 1, 4, 3, 1, 0, 1, 0, 0, 1],
     [1, 4, 3, 1, 0, 0, 1, 0, 0, 0, 0, 1],
@@ -95,16 +97,68 @@ def arrayToDrawing():
                     canvas.create_image(x1+26,y1+27,image=myCoin)
             else:
                 canvas.create_image(x1+23,y1+27,image=myImage)
-
-    #To display Score and  Time of moving================================================
-
     canvas.create_text(350,30,fill="yellow",font="Times 16  bold",text="Score: "+str(Coins))
     canvas.create_text(500,30,fill="yellow",font="Times 16  bold",text="Time Left: "+str(Moving))
     canvas.create_text(300,75,fill="yellow",font="Times 35  bold",text="Eat Coin!"+str(NameOfGame))
-    canvas.create_text(300,75,fill="yellow",font="Times 35  bold",text="Eat Coin!"+str(NameOfGame))
-
     return None
+####################heng
+def moveRight(event):
+    global grid
+    stoped=False
+    for row in range(len(grid)):
+        for coml in range(len(grid[row])-1):
+            if grid[row][coml]==2 and not stoped and grid[row][coml+1]!=1:
+                grid[row][coml]=0
+                grid[row][coml+1]=2
+                stoped=True
+            elif grid[row][coml]==2 and grid[row][coml+1]==3:
+                grid[row][coml]=0
+                grid[row][coml+1]=2
+                stoped=True
+                
+    arrayToDrawing()
+    print(grid)
+    
+def moveLeft(event):
+    global grid
+    canvas.delete("all")
+    stoped=False
+    for row in range(len(grid)):
+        for coml in range(len(grid[row])):
+            if grid[row][coml]==2 and  coml>0 and not stoped and grid[row][coml-1]!=1 :
+                grid[row][coml]=0
+                grid[row][coml-1]=2
+                stoped=True
+           
+    print(grid)
+    arrayToDrawing()
+def moveDown(event):
+    global grid
+    stoped=False
+    for row in range(len(grid)):
+        for coml in range(len(grid[row])):
+            if grid[row][coml]==2 and not stoped and grid[row+1][coml]!=1 :
+                grid[row][coml]=0
+                grid[row+1][coml]=2
+                stoped=True
+    print(grid)
+    arrayToDrawing()
 
+def moveUp(event):
+    global grid
+    stoped=False
+    for row in range(len(grid)):
+        for coml in range(len(grid[row])):
+            if grid[row][coml]==2 and grid[row-1][coml]!=1:
+                grid[row][coml]=0
+                grid[row-1][coml]=2
+                stoped=True
+    print(grid)
+    arrayToDrawing()
+root.bind("<Right>",moveRight)    
+root.bind("<Left>",moveLeft)    
+root.bind("<Up>", moveUp) #Up CLICK
+root.bind("<Down>", moveDown)
 canvas.pack(expand=True, fill="both")
 arrayToDrawing()
 root.mainloop()
