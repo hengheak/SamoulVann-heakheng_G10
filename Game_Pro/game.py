@@ -132,13 +132,13 @@ def MoveRight(event):
     global grid, Coins,Moving
     Moving=Moving-1
     position = PositionOfPlayer(grid)
-    playerrow = position[0]
-    playercolumn = position[1]
+    RowPlay = position[0]
+    columPlay = position[1]
     oldValue = 0
-    if grid[playerrow][playercolumn +1]!=1:
-        grid[playerrow][playercolumn ]=0
-        oldValue = grid[playerrow][playercolumn+1]
-        grid[playerrow][playercolumn +1]=2
+    if grid[RowPlay][columPlay +1]!=1:
+        grid[RowPlay][columPlay ]=0
+        oldValue = grid[RowPlay][columPlay+1]
+        grid[RowPlay][columPlay +1]=2
     
     if oldValue==coin:
         winsound .PlaySound('sound\coin.wav', winsound.SND_FILENAME)
@@ -155,13 +155,13 @@ def MoveLeft(event):
     global grid, Coins,Moving
     Moving=Moving-1
     position = PositionOfPlayer(grid)
-    playerrow = position[0]
-    playercolumn = position[1]
+    RowPlay = position[0]
+    columPlay = position[1]
     oldValue = 0
-    if grid[playerrow][playercolumn -1]!=1:
-        grid[playerrow][playercolumn ]=0
-        oldValue = grid[playerrow][playercolumn-1]
-        grid[playerrow][playercolumn -1]=2
+    if grid[RowPlay][columPlay +1]!=1:
+        grid[RowPlay][columPlay ]=0
+        oldValue = grid[RowPlay][columPlay+1]
+        grid[RowPlay][columPlay +1]=2
     
     if oldValue==coin:
         winsound .PlaySound('sound\coin.wav', winsound.SND_FILENAME)
