@@ -2,6 +2,7 @@
 import tkinter as tk
 import winsound
 from typing import Generator
+from tkinter import messagebox
 #  MAIN Code-----------------------------------------------------
 root = tk.Tk()
 
@@ -49,7 +50,8 @@ monster=4
 goal=5
 #==============================================================
 
-
+#winsound
+winsound.PlaySound("startgame.wav", winsound.SND_FILENAME|winsound.SND_ASYNC)
 # Main VARIABLES
 grid =[
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -105,19 +107,16 @@ def arrayToDrawing():
 def moveRight(event):
     global grid
     stoped=False
+    oldValue=0
     for row in range(len(grid)):
         for coml in range(len(grid[row])-1):
             if grid[row][coml]==2 and not stoped and grid[row][coml+1]!=1:
                 grid[row][coml]=0
                 grid[row][coml+1]=2
                 stoped=True
-            elif grid[row][coml]==2 and grid[row][coml+1]==3:
-                grid[row][coml]=0
-                grid[row][coml+1]=2
-                stoped=True
                 
-    arrayToDrawing()
     print(grid)
+    arrayToDrawing()
     
 def moveLeft(event):
     global grid
