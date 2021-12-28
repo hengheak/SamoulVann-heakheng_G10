@@ -1,5 +1,6 @@
 #  IMPORTS------------------------------------------------------
 import tkinter as tk
+from tkinter.constants import INSERT, LEFT, RIGHT
 import winsound
 
 # Create object------------------------------------------------
@@ -50,6 +51,11 @@ goal=5
 Coins=0
 Moving=23
 NameOfGame=""
+Right = False
+Left = False
+Down = False
+Up = False
+Lose = False
 #--------------------------------------------------------
 # Main VARIABLES
 grid =[
@@ -57,7 +63,7 @@ grid =[
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 2, 0, 3, 0, 3, 0, 1, 5, 0, 3, 0, 1],
-    [1, 4, 1, 1, 4, 4, 0, 1, 1, 1, 0, 4, 1],
+    [1, 0, 1, 1, 4, 4, 0, 1, 1, 1, 0, 4, 1],
     [1, 3, 3, 4, 1, 4, 3, 1, 0, 1, 3, 3, 1],
     [1, 4, 4, 3, 1, 0, 0, 1, 0, 0, 0, 4, 1],
     [1, 3, 1, 0, 1, 3, 4, 1, 0, 1, 1, 1, 1],
@@ -115,119 +121,63 @@ def arrayToDrawing():
     canvas.create_text(300,30,fill="yellow",font="Times 16  bold",text="Score: "+str(Coins))
     canvas.create_text(450,30,fill="yellow",font="Times 16  bold",text="Time Left: "+str(Moving))
     canvas.create_text(300,75,fill="yellow",font="Times 35  bold",text="Eat Coin!"+str(NameOfGame))
-    
+    return None
 
 #to make player can move right , left , up , down----------
-def PositionOfPlayer(grid) :
-    for column in range(len(grid)):
-        for row in range(len(grid[column])):
-            if grid[column][row]== 2:
-                position=[column,row]
-    return position
 
-#MoveRight-----------------------
+def PositionOfPlayer(position) :
+    global Moving,Right,Left,Down,Up,Coins
+    Moving+=(-1)
+    isTrue=True
+    for col in range(len(grid)):
+        for row in range(len(grid[col])):
+            if Right:
+                if grid[col][row]==2 and position=="Right" and isTrue and grid[col][row +1]==0:
+                    grid[col][row]=0
+                    grid[col][row +1]=2
+                    isTrue=False
+                elif grid[col][row]==2 and isTrue and grid[col][row +1]==3:
+                    grid[col][row]=0
+                    grid[col][row +1]=2
+                    Coins+=10
+                    winsound .PlaySound('sound\coin.wav', winsound.SND_FILENAME)
+                    break
+                elif grid[col][row]==2 and isTrue and grid[col][row +1]==4:
+                    grid[col][row]=0
+                    grid[col][row +1]=2
+                    winsound .PlaySound('sound\coin.wav', winsound.SND_FILENAME)
+                    canvas.create_image(300,300,image=myLoser)
+            
+                if grid[col][row]==2 and position=="Left" and isTrue and grid[col][row -1]==0:
+                    grid[col][row]=0
+                    grid[col][row -1]=2
+                    isTrue=False
+
+            
+              
+
+    arrayToDrawing()
+
+# #MoveRight-----------------------
 
 def MoveRight(event):
-    global grid, Coins,Moving
-    Moving=Moving-1
-    position = PositionOfPlayer(grid)
-    RowPlay = position[0]
-    columPlay = position[1]
-    Value = 0
-    if grid[RowPlay][columPlay +1]!=1:
-        grid[RowPlay][columPlay ]=0
-        Value = grid[RowPlay][columPlay+1]
-        grid[RowPlay][columPlay +1]=2
-    
-    if Value==coin:
-        winsound .PlaySound('sound\coin.wav', winsound.SND_FILENAME)
-        Coins+=10
-    arrayToDrawing() 
-    if Value==monster:
-        winsound.PlaySound("sound\lost.wav",winsound.SND_FILENAME)
-        canvas.create_image(300,300,image=myLoser)
-    if Value==goal :
-        winsound.PlaySound("sound\win.wav",winsound.SND_FILENAME)
-        canvas.create_image(100,100,image=myWiner)
+    global Right
+    PositionOfPlayer("Right")
 
 
-
-#Move Left--------------------------------------
+# #Move Left--------------------------------------
 def MoveLeft(event):
-    global grid, Coins,Moving
-    Moving=Moving-1
-    position = PositionOfPlayer(grid)
-    RowPlay = position[0]
-    columPlay = position[1]
-    Value = 0
-    if grid[RowPlay][columPlay -1]!=1:
-        grid[RowPlay][columPlay ]=0
-        Value = grid[RowPlay][columPlay-1]
-        grid[RowPlay][columPlay -1]=2
-    
-    if Value==coin:
-        winsound .PlaySound('sound\coin.wav', winsound.SND_FILENAME)
-        Coins=Coins+10
-    arrayToDrawing() 
-    if Value==monster:
-        winsound.PlaySound("sound\lost.wav",winsound.SND_FILENAME)
-        canvas.create_image(300,300,image=myLoser)
-    if Value==goal :
-        winsound.PlaySound("sound\win.wav",winsound.SND_FILENAME)
-        canvas.create_image(300,300,image=myWiner)
+    global Left
+    PositionOfPlayer("Left")
 
-
-
-#Move Down----------------------------------------------
+# #Move Down----------------------------------------------
 def moveDown(event):
-    global grid, Coins,Moving
-    Moving=Moving-1
-    position = PositionOfPlayer(grid)
-    RowPlay = position[0]
-    columPlay = position[1]
-    Value = 0
-    if grid[RowPlay+1][columPlay]!=1:
-        grid[RowPlay][columPlay ]=0
-        Value = grid[RowPlay+1][columPlay]
-        grid[RowPlay+1][columPlay]=2
-    
-    if Value==coin:
-        winsound .PlaySound('sound\coin.wav', winsound.SND_FILENAME)
-        Coins=Coins+10
-    arrayToDrawing() 
-    if Value==monster:
-        winsound.PlaySound("sound\lost.wav",winsound.SND_FILENAME)
-        canvas.create_image(300,300,image=myLoser)
-    if Value==goal :
-        winsound.PlaySound("sound\win.wav",winsound.SND_FILENAME)
-        canvas.create_image(100,100,image=myWiner)
-
-
+    global Down
+    PositionOfPlayer("Down")
 
 #Move Up-----------------------------------------------
 def moveUp(event):
-    global grid, Coins,Moving
-    Moving=Moving-1
-    position = PositionOfPlayer(grid)
-    RowPlay = position[0]
-    columPlay = position[1]
-    Value = 0
-    if grid[RowPlay-1][columPlay]!=1:
-        grid[RowPlay][columPlay ]=0
-        Value = grid[RowPlay-1][columPlay]
-        grid[RowPlay-1][columPlay]=2
-    
-    if Value==coin:
-        winsound .PlaySound('sound\coin.wav', winsound.SND_FILENAME)
-        Coins=Coins+10
-    arrayToDrawing() 
-    if Value==monster:
-        winsound.PlaySound("sound\lost.wav",winsound.SND_FILENAME)
-        canvas.create_image(300,300,image=myLoser)
-    if Value==goal :
-        winsound.PlaySound("sound\win.wav",winsound.SND_FILENAME)
-        canvas.create_image(100,100,image=myWiner)
-
+    PositionOfPlayer("Up")
 
 #Key event of move Player----------------
 root.bind("<Right>",MoveRight)#Right click    
