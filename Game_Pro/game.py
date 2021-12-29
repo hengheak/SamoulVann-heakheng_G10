@@ -32,7 +32,7 @@ myBackground=tk.PhotoImage(file='images\gBackg.png')
 
 #Image Result 
 #Show when user Win!!!!!!----------------------------------
-myWiner=tk.PhotoImage(file='images\youwin.png')
+myWiner=tk.PhotoImage(file='images\winer.png')
 
     #Show when user Loose!!!-----------------------------------
 myLoser=tk.PhotoImage(file='images\gameover.png')
@@ -93,8 +93,6 @@ def arrayToDrawing():
         for X in range  (len(grid[0])):
             x1 = (X * 45)
             y1 = (Y * 45)
-            x2 = 45 + x1
-            y2 = 45 + y1
             value = grid[Y][X]
             if value != player:
                 if value !=coin:
